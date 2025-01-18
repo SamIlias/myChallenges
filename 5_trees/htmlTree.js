@@ -1,4 +1,3 @@
-
 const htmlTree = {
   name: 'html',
   type: 'tag-internal',
@@ -59,11 +58,9 @@ const htmlTree = {
   ],
 };
 
-
-
-const filterEmpty = (tree) => {
+const filterEmpty = tree => {
   const filtered = tree.children
-    .map((node) => {
+    .map(node => {
       // Перед фильтрацией отфильтровываем всех потомков
       if (node.type === 'tag-internal') {
         // Тут самый важный момент. Рекурсивно вызываем функцию фильтрации.
@@ -72,7 +69,7 @@ const filterEmpty = (tree) => {
       }
       return node;
     })
-    .filter((node) => {
+    .filter(node => {
       const { type } = node;
       // Каждый тип фильтруется по-своему, удобно для этого использовать switch
       switch (type) {
@@ -90,19 +87,18 @@ const filterEmpty = (tree) => {
           // Для текстовых узлов просто проверяем существование контента,
           return !!content; // Для однозначности приводим значение к булевому типу
         }
+        default:
+          return true;
       }
     });
   return { ...tree, children: filtered };
 };
 
-
-
-
 // Для удобства определим отдельную функцию для формирования вывода класса
-const buildClass = (node) => node.className ? ` class=${node.className}` : '';
+const buildClass = node => (node.className ? ` class=${node.className}` : '');
 
 // Основная функция для сборки страницы
-const buildHtml = (node) => {
+const buildHtml = node => {
   const { type, name } = node;
   // Каждый тип формируется по-своему, как и в фильтрации используем switch
   switch (type) {
@@ -118,12 +114,14 @@ const buildHtml = (node) => {
     case 'text':
       // В текстовых узлах выводится сам контент
       return node.content;
+    default:
+      return true;
   }
 };
 
 // Получаем отфильтрованное дерево
 const filteredTree = filterEmpty(htmlTree);
-
+console.log(filteredTree);
 // Формируем результат
 const html = buildHtml(filteredTree);
 console.log(html); // => <html><body><h1>Сообщество</h1><p>Общение между пользователями Хекслета</p><hr><input></body></html>
