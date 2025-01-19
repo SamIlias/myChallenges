@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import * as ft from './flatTrees.js';
 
 const tree1 = [
@@ -15,4 +16,5 @@ const tree1 = [
   ],
 ];
 
-console.log(ft.makeFlat(tree1));
+console.log(_.cloneDeep(tree1));
+console.log(tree1);

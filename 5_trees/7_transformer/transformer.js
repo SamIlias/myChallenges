@@ -33,30 +33,9 @@
 
 import * as flat from '../flatTrees.js';
 
-/* eslint-disable no-param-reassign */
 export default (tree, newRootName) => {
   const newFlatTree = flat.makeFlat(tree);
+  const transformedFlat = flat.rebuildFlat(newFlatTree, newRootName, null);
 
-  function transformFlat(flatTree, curNode, newParent) {
-    if (!flatTree[curNode]) {
-      throw new Error('The passed node does not exist');
-    }
-    const [prevParent, prevChildren] = flatTree[curNode];
-
-    const newChildren = prevChildren.filter(child => child !== newParent);
-    if (prevParent) {
-      newChildren.push(prevParent);
-    }
-
-    flatTree[curNode] = [newParent, newChildren];
-
-    if (prevParent) {
-      transformFlat(flatTree, prevParent, curNode);
-    }
-
-    return flatTree;
-  }
-
-  const transformedFlat = transformFlat(newFlatTree, newRootName, null);
   return flat.buildTree(transformedFlat, newRootName);
 };
