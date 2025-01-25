@@ -45,13 +45,10 @@ export const filtered = (predicate, tree) => {
 export const reduce = (callback, tree, accum) => {
   if (!fs.isDirectory(tree)) {
     const newAcc = callback(accum, tree);
-    console.log(tree.name, newAcc);
     return newAcc;
   }
 
   const curAcc = callback(accum, tree);
-  console.log(tree.name, curAcc);
-
   const children = fs.getChildren(tree);
   const newAcc = children.reduce(
     (acc, child) => reduce(callback, child, acc),
